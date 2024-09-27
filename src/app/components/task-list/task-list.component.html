@@ -1,0 +1,44 @@
+<h2>Lista de Tareas</h2>
+<div>
+  <button
+    (click)="changedFilter('all')"
+    [class.active]="filtersStatus === 'all'"
+  >
+    Todas
+  </button>
+  <button
+    (click)="changedFilter('Completed')"
+    [class.active]="filtersStatus === 'Completed'"
+  >
+    Completadas
+  </button>
+  <button
+    (click)="changedFilter('Pending')"
+    [class.active]="filtersStatus === 'Pending'"
+  >
+    Pendientes
+  </button>
+</div>
+
+<div *ngFor="let task of tasks | async">
+  <h3>{{ task.name }}</h3>
+  <p>Fecha limite: {{ task.limitdate }}</p>
+  <p>Estado: {{ task.completed ? "Completada" : "Pendiente" }}</p>
+
+  <h4>Personas asignadas</h4>
+  <ul>
+    <li *ngFor="let person of task.people">
+      {{ person.namePerson }} - {{ person.age }}
+      <ul>
+        <li *ngFor="let skill of person.skills">{{ skill }}</li>
+      </ul>
+    </li>
+  </ul>
+  <button
+    type="button"
+    (click)="markComplete(task.id)"
+    [disabled]="task.completed"
+  >
+    Marcar como Completada
+  </button>
+</div>

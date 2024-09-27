@@ -1,0 +1,40 @@
+<h2>Crear Nueva Tarea</h2>
+
+<form [formGroup]="taskForm" (ngSubmit)="submitTask()">
+  <label for="task-name">Nombre de la Tarea:</label>
+  <input id="task-name" formControlName="name" type="text" />
+
+  <label for="task-limitdate">Fecha Límite:</label>
+  <input id="task-limitdate" formControlName="limitdate" type="date" />
+
+  <div formArrayName="people">
+    <div
+      *ngFor="let person of people.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <h3>Persona {{ i + 1 }}</h3>
+
+      <label>Nombre:</label>
+      <input formControlName="namePerson" type="text" />
+
+      <label>Edad:</label>
+      <input formControlName="age" type="number" />
+
+      <div formArrayName="skills">
+        <h4>Habilidades</h4>
+        <div *ngFor="let skill of getSkillsArray(i).controls; let j = index">
+          <input [formControlName]="j" type="text" />
+          <button type="button" (click)="deleteSkill(i, j)">
+            Eliminar Habilidad
+          </button>
+        </div>
+        <button type="button" (click)="addSkill(i)">Agregar Habilidad</button>
+      </div>
+
+      <button type="button" (click)="deletePerson(i)">Eliminar Persona</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addPerson()">Agregar Persona</button>
+  <button type="submit" [disabled]="taskForm.invalid">Guardar Tarea</button>
+</form>
